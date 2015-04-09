@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+SWISH_DIR="your/swish/install/build/Swish"
+
+if [[ -f project.swift ]]; then
+  DYLD_LIBRARY_PATH="$SWISH_DIR:$DYLD_LIBRARY_PATH" xcrun swift -I $SWISH_DIR -lSwish $PWD/project.swift $@ 2>&1
+else
+  echo "Couldn't find project.swift file in $PWD"
+fi

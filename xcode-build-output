@@ -1,0 +1,220 @@
+BUILD_DIR="/Users/pratt/Library/Developer/Xcode/DerivedData/Simple-goqwupnmxydzducubjhxqtkpmmqf/Build"
+PROJECT_BUILD_DIR="$BUILD_DIR/Intermediates/Simple.build/Debug/Simple.build"
+ROOT_DIR="/Users/pratt/src/sandbox/Simple"
+
+DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"
+XC_TOOLCHAIN="$DEVELOPER_DIR/Toolchains/XcodeDefault.xcoolchain"
+
+# Write Aux Files
+mkdir -p $PROJECT_BUILD_DIR/Objects-normal/x86_64
+mkdir -p $PROJECT_BUILD_DIR/DerivedSources
+mkdir -p $BUILD_DIR/Products/Debug/Simple.framework/Versions/A/Modules
+
+touch $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple.LinkFileList
+touch $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple-OutputFileMap.json
+touch $PROJECT_BUILD_DIR/Simple-all-non-framework-target-headers.hmap
+touch $PROJECT_BUILD_DIR/Simple-own-target-headers.hmap
+touch $PROJECT_BUILD_DIR/Simple-all-target-headers.hmap
+touch $PROJECT_BUILD_DIR/Simple-generated-files.hmap
+touch $PROJECT_BUILD_DIR/swift-overrides.hmap
+touch $PROJECT_BUILD_DIR/Simple.hmap
+touch $PROJECT_BUILD_DIR/Simple-project-headers.hmap
+touch $PROJECT_BUILD_DIR/DerivedSources/Simple_vers.c
+touch $BUILD_DIR/Products/Debug/Simple.framework/Versions/A/Modules/module.modulemap
+
+# Create Project Structure
+ln -sfh Versions/Current/Modules $BUILD_DIR/Products/Debug/Simple.framework/Modules
+mkdir  -p $BUILD_DIR/Products/Debug/Simple.framework/Versions/A/Headers
+ln -sfh A $BUILD_DIR/Products/Debug/Simple.framework/Versions/Current
+ln -sfh Versions/Current/Headers $BUILD_DIR/Products/Debug/Simple.framework/Headers
+ln -sfh Versions/Current/Simple $BUILD_DIR/Products/Debug/Simple.framework/Simple
+
+# Compile Swift Sources
+cd $ROOT_DIR
+$XC_TOOLCHAIN/usr/bin/swiftc
+    -target x86_64-apple-macosx10.10
+    -module-name Simple
+    -Onone
+    -sdk $DEVELOPER_DIR/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk
+    -g # emit debug info
+    -module-cache-path /Users/pratt/Library/Developer/Xcode/DerivedData/ModuleCache
+    -I $BUILD_DIR/Products/Debug
+    -F $BUILD_DIR/Products/Debug
+    -parse-as-library
+    -c # undocumented
+    -j8
+    /Users/pratt/src/sandbox/Simple/Simple/Dumb.swift
+    -output-file-map $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple-OutputFileMap.json
+    -parseable-output # emit textual output as a parseable format
+    -serialize-diagnostics # binary diagnostics for debugging
+    -emit-dependencies # make-compatible dependencies files
+    -emit-module
+    -emit-module-path $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple.swiftmodule
+    -Xcc -I$PROJECT_BUILD_DIR/swift-overrides.hmap
+    -Xcc -iquote
+    -Xcc $PROJECT_BUILD_DIR/Simple-generated-files.hmap
+    -Xcc -I$PROJECT_BUILD_DIR/Simple-own-target-headers.hmap
+    -Xcc -I$PROJECT_BUILD_DIR/Simple-all-non-framework-target-headers.hmap
+    -Xcc -ivfsoverlay
+    -Xcc $BUILD_DIR/Intermediates/Simple.build/all-product-headers.yaml
+    -Xcc -iquote
+    -Xcc $PROJECT_BUILD_DIR/Simple-project-headers.hmap
+    -Xcc -I$BUILD_DIR/Products/Debug/include
+    -Xcc -I$XC_TOOLCHAIN/usr/include
+    -Xcc -I$PROJECT_BUILD_DIR/DerivedSources/x86_64
+    -Xcc -I$PROJECT_BUILD_DIR/DerivedSources
+    -Xcc -DDEBUG=1
+    -emit-objc-header
+    -emit-objc-header-path $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple-Swift.h
+
+
+# MergeSwiftModule
+cd /Users/pratt/src/sandbox/Simple
+$XC_TOOLCHAIN/usr/bin/swift
+    -frontend
+    -emit-module $PROJECT_BUILD_DIR/Objects-normal/x86_64/Dumb~partial.swiftmodule
+    -parse-as-library
+    -target x86_64-apple-macosx10.10
+    -target-cpu core2
+    -sdk $DEVELOPER_DIR/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk
+    -I $BUILD_DIR/Products/Debug
+    -F $BUILD_DIR/Products/Debug
+    -g
+    -module-cache-path /Users/pratt/Library/Developer/Xcode/DerivedData/ModuleCache
+    -Xcc -I$PROJECT_BUILD_DIR/swift-overrides.hmap
+    -Xcc -iquote
+    -Xcc $PROJECT_BUILD_DIR/Simple-generated-files.hmap
+    -Xcc -I$PROJECT_BUILD_DIR/Simple-own-target-headers.hmap
+    -Xcc -I$PROJECT_BUILD_DIR/Simple-all-non-framework-target-headers.hmap
+    -Xcc -ivfsoverlay
+    -Xcc $BUILD_DIR/Intermediates/Simple.build/all-product-headers.yaml
+    -Xcc -iquote
+    -Xcc $PROJECT_BUILD_DIR/Simple-project-headers.hmap
+    -Xcc -I$BUILD_DIR/Products/Debug/include
+    -Xcc -I$XC_TOOLCHAIN/usr/include
+    -Xcc -I$PROJECT_BUILD_DIR/DerivedSources/x86_64
+    -Xcc -I$PROJECT_BUILD_DIR/DerivedSources
+    -Xcc -DDEBUG=1
+    -emit-module-doc-path $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple.swiftdoc
+    -module-name Simple
+    -emit-objc-header-path $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple-Swift.h
+    -o $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple.swiftmodule
+
+# Copy Simple-Swift.h
+cd /Users/pratt/src/sandbox/Simple
+/usr/bin/ditto -rsrc $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple-Swift.h
+                     $BUILD_DIR/Products/Debug/Simple.framework/Versions/A/Headers/Simple-Swift.h
+
+
+
+
+
+
+  ### -- PROBABLY NOT NEEDED -- ###
+###     Compile Simple_vers.c     ####
+  ### -- PROBABLY NOT NEEDED -- ###
+
+cd /Users/pratt/src/sandbox/Simple
+export LANG=en_US.US-ASCII
+$XC_TOOLCHAIN/usr/bin/clang
+    -x c
+    -arch x86_64
+    -fmessage-length=0
+    -fdiagnostics-show-note-include-stack
+    -fmacro-backtrace-limit=0
+    -std=gnu99
+    -fmodules
+    -fmodules-cache-path=/Users/pratt/Library/Developer/Xcode/DerivedData/ModuleCache
+    -fmodules-prune-interval=86400
+    -fmodules-prune-after=345600
+    -Wnon-modular-include-in-framework-module
+    -Werror=non-modular-include-in-framework-module
+    -fmodule-implementation-of Simple
+    -Wno-trigraphs
+    -fpascal-strings
+    -O0
+    -Wno-missing-field-initializers
+    -Wno-missing-prototypes
+    -Werror=return-type
+    -Wunreachable-code
+    -Werror=deprecated-objc-isa-usage
+    -Werror=objc-root-class
+    -Wno-missing-braces
+    -Wparentheses
+    -Wswitch
+    -Wunused-function
+    -Wno-unused-label
+    -Wno-unused-parameter
+    -Wunused-variable
+    -Wunused-value
+    -Wempty-body
+    -Wconditional-uninitialized
+    -Wno-unknown-pragmas
+    -Wno-shadow
+    -Wno-four-char-constants
+    -Wno-conversion
+    -Wconstant-conversion
+    -Wint-conversion
+    -Wbool-conversion
+    -Wenum-conversion
+    -Wshorten-64-to-32
+    -Wpointer-sign
+    -Wno-newline-eof
+    -DDEBUG=1
+    -isysroot $DEVELOPER_DIR/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk
+    -fasm-blocks
+    -fstrict-aliasing
+    -Wdeprecated-declarations
+    -mmacosx-version-min=10.10
+    -g
+    -Wno-sign-conversion
+    -iquote $PROJECT_BUILD_DIR/Simple-generated-files.hmap
+    -I$PROJECT_BUILD_DIR/Simple-own-target-headers.hmap
+    -I$PROJECT_BUILD_DIR/Simple-all-non-framework-target-headers.hmap
+    -ivfsoverlay $BUILD_DIR/Intermediates/Simple.build/all-product-headers.yaml
+    -iquote $PROJECT_BUILD_DIR/Simple-project-headers.hmap
+    -I$BUILD_DIR/Products/Debug/include
+    -I$XC_TOOLCHAIN/usr/include
+    -I$PROJECT_BUILD_DIR/DerivedSources/x86_64
+    -I$PROJECT_BUILD_DIR/DerivedSources
+    -F$BUILD_DIR/Products/Debug
+    -MMD
+    -MT dependencies
+    -MF $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple_vers.d
+    --serialize-diagnostics $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple_vers.dia
+    -c $PROJECT_BUILD_DIR/DerivedSources/Simple_vers.c
+    -o $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple_vers.o
+
+# Copy x86_64.swiftmodule
+cd /Users/pratt/src/sandbox/Simple
+/usr/bin/ditto -rsrc $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple.swiftmodule
+    $BUILD_DIR/Products/Debug/Simple.framework/Versions/A/Modules/Simple.swiftmodule/x86_64.swiftmodule
+
+# Link product
+cd /Users/pratt/src/sandbox/Simple
+export MACOSX_DEPLOYMENT_TARGET=10.10
+$XC_TOOLCHAIN/usr/bin/clang
+    -arch x86_64
+    -dynamiclib
+    -isysroot $DEVELOPER_DIR/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk
+    -L$BUILD_DIR/Products/Debug
+    -F$BUILD_DIR/Products/Debug
+    -filelist $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple.LinkFileList
+    -install_name @rpath/Simple.framework/Versions/A/Simple
+    -Xlinker -rpath
+    -Xlinker @executable_path/../Frameworks
+    -Xlinker -rpath
+    -Xlinker @loader_path/Frameworks
+    -mmacosx-version-min=10.10
+    -L$XC_TOOLCHAIN/usr/lib/swift/macosx
+    -Xlinker -add_ast_path
+    -Xlinker $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple.swiftmodule
+    -single_module
+    -compatibility_version 1
+    -current_version 1
+    -Xlinker -dependency_info
+    -Xlinker $PROJECT_BUILD_DIR/Objects-normal/x86_64/Simple_dependency_info.dat
+    -o $BUILD_DIR/Products/Debug/Simple.framework/Versions/A/Simple
+
+# Touch framework
+/usr/bin/touch -c $BUILD_DIR/Products/Debug/Simple.framework
