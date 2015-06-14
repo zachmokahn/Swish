@@ -39,11 +39,11 @@ Swish.project("MyProject") { project in
 
   // define a simple task that runs a function
   project.task("Hello") {
-    println("Hello!")
+    print("Hello!")
   }
 
-  // define a script, a runnable file that can link with application code
-  // the src/scripts/Greet.swift script will run,linking the Contacts module
+  // define a script, a runnable file that can optionally link with
+  // application code
   project.script("Greet", ["Contacts"])
 }
 
@@ -53,19 +53,20 @@ You can check out the [Example Project](src/example/project.swift)!
 
 Current Features
 ---
-* builds pure-Swift apps and modules
+* builds pure-Swift apps and dynamic modules
 * links targets and apps
-* runs simple tasks, with dependencies
-* runs scripts linked with project libraries
+* runs tasks, with optional dependencies
+* runs scripts, linked with project libraries
 
 RoadMap
 ---
 * Clang targets for C/Obj-C code
 * better build logging/output
 * only build targets if they contain code that has changed
+  * this is going to require that I write some C or Obj-C
 * profiles (production / development by default: optimization levels, etc)
 * installation script (brew?)
-* nested projects / recursive discovery
+* nested projects / recursive discovery / compilation of build "app"
 * re-organization of build output / build dirs to simplify build cmds?
   * symlink of dylibs/swiftmodules?
 * plugin API

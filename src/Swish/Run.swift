@@ -9,11 +9,11 @@ struct Run {
   }
 
   static func libPath(links: [(module: String, path: String)]) -> String {
-    return libPath(map(links) { _, path in path })
+    return libPath(links.map() { _, path in path })
   }
 
   static func libPath(paths: [String]) -> String {
-    let pathStr = join(":", map(paths) { Swish.root + $0 })
+    let pathStr = ":".join(paths.map() { Swish.root + $0 })
     return "DYLD_LIBRARY_PATH=\(pathStr):$DYLD_LIBRARY_PATH"
   }
 }

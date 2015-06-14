@@ -11,7 +11,7 @@ struct Sys {
     var readBuffer : UnsafeMutablePointer<Int8> = nil
     errno = 0
 
-    var filePtr = popen(cmd, "r")
+    let filePtr = popen(cmd, "r")
     var output = ""
 
     var line: Int = 0
@@ -33,4 +33,3 @@ struct Sys {
     Darwin.exit(status)
   }
 }
-

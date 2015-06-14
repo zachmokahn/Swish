@@ -4,7 +4,7 @@ public struct Swish {
 
   static var scripts: [Script] { return project.scripts }
   static var targets: [Target] { return project.targets }
-  static var tasks: [Task] { return project.tasks }
+  static var tasks: [Tasks.Task] { return project.tasks }
   static var log = Log()
   static let root = Strings.strip(Sys.exec("pwd", read: true).output) + "/"
 

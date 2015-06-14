@@ -6,9 +6,9 @@ let root = path.withCString() { str in opendir(str) }
 
 if(root != nil) {
   let dir = readdir(root)
-  println(dir)
+  print(dir)
 }
 
-println(root)
+print(root)
 
 dir.dealloc(1)

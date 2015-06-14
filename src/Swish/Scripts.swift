@@ -18,7 +18,7 @@ struct ScriptCommand {
   }
 
   var links: String {
-    return join(" ", map(script.targets) { target in
+    return " ".join(script.targets.map() { target in
       "-I\(Swish.root + target.buildDir) -l\(target.name)"
     })
   }

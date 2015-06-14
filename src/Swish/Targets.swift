@@ -17,9 +17,9 @@ public class Target {
   public var moduleDeps : [Link] = []
 
   var links: [Link] {
-    let subtargets = Seq.compact(map(targetDeps, Targets.named))
+    let subtargets = Seq.compact(targetDeps.map(Targets.named))
 
-    return map(subtargets) {
+    return subtargets.map() {
       Link(module: $0.name, path: $0.buildDir)
     } + moduleDeps
   }
@@ -32,11 +32,11 @@ public class Target {
     self.sourceDir = "src/\(name)"
   }
 
-  public func link(#target: String) {
+  public func link(target target: String) {
     self.targetDeps.append(target)
   }
  
-  public func link(#module: String, path: String) {
+  public func link(module module: String, path: String) {
     self.moduleDeps.append(Link(module: module, path: path))
   }
 }

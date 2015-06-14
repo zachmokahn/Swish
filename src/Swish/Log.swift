@@ -1,5 +1,5 @@
 struct Log {
-  var out : String -> Void = println
+  var out : String -> Void = print
 
   init() {}
 

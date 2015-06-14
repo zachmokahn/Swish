@@ -12,7 +12,7 @@ public class Project {
 
   var targets: [Target] = []
   var scripts: [Script] = []
-  var tasks: [Task] = []
+  var tasks: [Tasks.Task] = []
 
   init(name: String) {
     self.name = name
@@ -24,12 +24,12 @@ public class Project {
     deps: [String],
     configFn: ConfigFn
   ) -> Target {
-    var target = Target(name: name, deps: deps, type: type)
+    let target = Target(name: name, deps: deps, type: type)
     self.targets.append(target)
 
     configFn(target)
 
-    let buildDeps = map(deps) { "\($0):build" }
+    let buildDeps = deps.map() { "\($0):build" }
     self.task("\(name):build", buildDeps) { Build.execute(target) }
     return target
   }
@@ -52,12 +52,12 @@ public class Project {
   }
 
   public func script(name: String, _ deps: [String] = []) {
-    let script = (name: name, targets: Seq.compact(map(deps, Targets.named)))
+    let script = (name: name, targets: Seq.compact(deps.map(Targets.named)))
     self.task(name, fn: { Scripts.run(script) })
   }
 
   public func task(name: String, _ prereqs: [String] = [], fn: Void -> Void = {}) {
-    tasks.append(Task(name: name, fn: fn, prereqs: prereqs))
+    tasks.append(Tasks.Task(name: name, fn: fn, prereqs: prereqs))
   }
 }
 

@@ -1,6 +1,10 @@
-typealias Task = (name: String, fn: Void -> Void, prereqs: [String])
-
 struct Tasks {
+  struct Task {
+    let name: String
+    let fn: Void -> Void
+    let prereqs: [String]
+  }
+
   static func named(name: String) -> Task? {
     return Seq.find(Swish.tasks) { $0.name == name }
   }
