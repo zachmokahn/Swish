@@ -10,5 +10,5 @@ Swish.project("ContactBook") { project in
   project.task("build", ["Contacts:build", "CLI:build"])
   project.task("run", ["CLI:run"])
 
-  project.script("testing")  
+  project.script("testing")
 }

@@ -19,6 +19,9 @@ Cocoa -- these won't be.
 Also, Swift without Cocoa is really interesting and fun as a thought experiment,
 so there's that, too.
 
+Clearly this is alpha software. You agree that you won't blame me if it breaks.
+License TBD.
+
 The Gist
 ---
 
@@ -70,3 +73,12 @@ RoadMap
 * re-organization of build output / build dirs to simplify build cmds?
   * symlink of dylibs/swiftmodules?
 * plugin API
+
+Installing
+----------- 
+Clone the repo, run `rake build`, edit `bin/swish` to point to the
+newly-created "build" directory, and copy `bin/swish` somewhere on your `$PATH`
+
+To verify, `(cd example && swish run)`
+
+I know, it's rudimentary. It's alpha software. What do you expect? :P

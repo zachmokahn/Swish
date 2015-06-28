@@ -1,7 +1,7 @@
 class BuildCommand {
   static func forTarget(target: Target) -> BuildCommand {
     let srcDir = Swish.root + target.sourceDir
-    let sources = "\(srcDir)/*.swift"
+    let sources = "$(find \(srcDir) -name *.swift)"
 
     switch target.type {
     case .Module:
@@ -12,10 +12,10 @@ class BuildCommand {
     }
   }
 
+  var sdk = "macosx"
   var target: Target
   var sources: String
   var flags: [String] = []
-  var sdk = "macosx"
   var buildDir: String { return Swish.root + target.buildDir }
 
   var links: String {

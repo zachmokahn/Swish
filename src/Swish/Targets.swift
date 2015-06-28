@@ -40,4 +40,3 @@ public class Target {
     self.moduleDeps.append(Link(module: module, path: path))
   }
 }
-
