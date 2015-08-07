@@ -24,9 +24,14 @@ class BuildCommand {
     })
   }
 
-  var command: String {
-    return "mkdir -p \(buildDir) && (cd \(buildDir) && xcrun --sdk \(sdk) " +
-      "swiftc \(links) \(Strings.space.join(flags)) \(sources))"
+  var commands: [(Void -> Void)] {
+    return [
+      ShellCommand.run("mkdir -p \(buildDir)"),
+      ShellCommand.run(
+        "swiftc \(links) \(Strings.space.join(flags)) \(sources)",
+        directory: buildDir
+      )
+    ]
   }
 
   init(sources: String, target: Target) {
