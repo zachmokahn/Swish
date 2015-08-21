@@ -1,3 +1,5 @@
+import Darwin
+
 public class Greeting {
   public var greeting: String
 

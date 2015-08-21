@@ -20,12 +20,12 @@ class BuildCommand {
 
   var links: String {
     return Strings.space.join(target.links.map() { ln in
-      "-L\(Swish.root + ln.path) -I\(Swish.root + ln.path) -l\(ln.module)"
+      "-L\(ln.path) -I\(ln.path) -l\(ln.module)"
     })
   }
 
   var command: String {
-    return "mkdir -p \(buildDir) && (cd \(buildDir) && xcrun --sdk \(sdk) " +
+    return "mkdir -p \(buildDir) && (cd \(buildDir) && xcrun -sdk \(sdk) " +
       "swiftc \(links) \(Strings.space.join(flags)) \(sources))"
   }
 

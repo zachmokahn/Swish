@@ -20,7 +20,7 @@ public class Target {
     let subtargets = Seq.compact(targetDeps.map(Targets.named))
 
     return subtargets.map() {
-      Link(module: $0.name, path: $0.buildDir)
+      Link(module: $0.name, path: Swish.root + $0.buildDir)
     } + moduleDeps
   }
 
@@ -35,7 +35,7 @@ public class Target {
   public func link(target target: String) {
     self.targetDeps.append(target)
   }
- 
+
   public func link(module module: String, path: String) {
     self.moduleDeps.append(Link(module: module, path: path))
   }

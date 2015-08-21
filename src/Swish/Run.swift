@@ -5,7 +5,9 @@ struct Run {
       Sys.exit(1)
     }
 
-    Sys.exec("\(libPath(target.links)) \(target.buildDir)/\(target.name)")
+    let cmd = "\(libPath(target.links)) \(target.buildDir)/\(target.name)"
+    Swish.log.debug(cmd)
+    Sys.exec(cmd)
   }
 
   static func libPath(links: [(module: String, path: String)]) -> String {
@@ -13,7 +15,7 @@ struct Run {
   }
 
   static func libPath(paths: [String]) -> String {
-    let pathStr = ":".join(paths.map() { Swish.root + $0 })
+    let pathStr = ":".join(paths)
     return "DYLD_LIBRARY_PATH=\(pathStr):$DYLD_LIBRARY_PATH"
   }
 }

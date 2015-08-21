@@ -41,3 +41,9 @@ end
 task :run_example do
   system("(cd ./example && swish CLI:run)")
 end
+
+task :publish do
+  system(
+    "cp ./build/Swish/*.{swiftmodule,dylib} /usr/local/bin/swish/"
+  )
+end
