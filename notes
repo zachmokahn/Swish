@@ -1,2 +1,0 @@
-- Get Swift stuff to work in many-phase compilation by building 
-  objects first.

@@ -1,84 +1,100 @@
-Swish
-==
+# Swish
+### What is it?
+It's a (working, but rudimentary) command-line build tool for Swift projects.
+Think of it like `make`, `rake`, `lein`, or `grunt`, except made primarily to
+work with Swift (and siblings)
 
-![Swish!](https://d13yacurqjgara.cloudfront.net/users/31664/screenshots/1256215/court-2.gif)
+### What does it do?
+Right now, it compiles and links pure-Swift code. It runs simple
+tasks and scripts. In the future, it could do all sorts of things: run tests,
+download and install dependencies, deploy code, whatever.
 
-Swish is an overly-optimistic take on a command-line build tool for Swift. It's
-based on tools like Rake, Gulp, or Leiningen that have in-language DSLs for
-configuration of builds.
+### How do I use it?
+First, know that Swish is unpublished, and doesn't have a "version" yet. It's
+more like a prototype. To install it, put `bin/swish` somewhere on your path and
+modify it to point to the directory Swish is cloned to. Run `rake` to build.
+(I'll get this process better automated in the future).
 
-The goal for Swish is to maintain a simple core API for compilation, linking,
-and automation with an extensible architecture to enable plugins for, well, all
-kinds of stuff! Right now, Swish is a proof-of-concept, but it's still usable.
+Make a new project directory. Add a file called `project.swift` to that new
+directory. This file tells Swift some metadata about your project, so that
+Swish knows how to bootstrap the build process (plugins, etc)
 
-The other goal is to explicitly avoid using anything proprietary to Apple beyond
-the Swift compiler itself and Darwin (Apple's implementation of libC).  The idea
-is that if Swift becomes open-sourced, XCode, `xcodebuild`, CoreFoundation,
-Cocoa -- these won't be.
+example:
 
-Also, Swift without Cocoa is really interesting and fun as a thought experiment,
-so there's that, too.
+    import Swish
 
-Clearly this is alpha software. You agree that you won't blame me if it breaks.
-License TBD.
+    Swish.defineProject { project in
+      project.name = "Swish"
+      project.authors = ["Virginia Woolf", "Mark Twain"]
+      project.repo = .GitHub("bppr/Swish")
+      project.homepage = "http://bppr.github.io/Swish"
 
-The Gist
----
+      project.description = "A command-line build-tool for Swift."
+      project.license = "MIT"
 
-```swift
-import Swish
+      project.plugins = ["Swiftest"]
+    }
 
-Swish.project("MyProject") { project in
 
-  // define a module target called 'Contacts'
-  project.module("Contacts")
+Then, you can create some tasks:
 
-  // define an app target called 'CLI' that depends on 'Contacts' module
-  project.app("CLI", ["Contacts"])
+    project.task("turtles") {
+      print("I like turtles.")
+    }
 
-  // define tasks that are a collection of dependent tasks
-  project.task("build", ["Contacts:build", "CLI:build"])
-  project.task("run", ["CLI:run"])
+And run them
 
-  // define a simple task that runs a function
-  project.task("Hello") {
-    print("Hello!")
-  }
+    $ swish turtles
+    I like turtles
 
-  // define a script, a runnable file that can optionally link with
-  // application code
-  project.script("Greet", ["Contacts"])
-}
+You can use Swish to build some Swift code. Here, I'll define a `module` target
+called "swish:core", and give it a few simple configuration options.
 
-```
+    Swish.module("swish:core") { module in
+      module.srcDir = "src/swish/core"
+      // the name of the created module
+      module.productName("Swish")
+    }
 
-You can check out the [Example Project](src/example/project.swift)!
+A module target creates a pure-Swift dynamic library. This module can be
+imported by other targets or projects. Adding a module target also adds a build
+task for the given module. For our target above, we could build it with
+`swish:core:build`.
 
-Current Features
----
-* builds pure-Swift apps and dynamic modules
-* links targets and apps
-* runs tasks, with optional dependencies
-* runs scripts, linked with project libraries
+We can also define an `app` target, which will create an executable. Here,
+we'll create an app called "swish:client", and make it depend on the "core"
+library we built previously.
 
-RoadMap
----
-* Clang targets for C/Obj-C code
-* better build logging/output
-* only build targets if they contain code that has changed
-  * this is going to require that I write some C or Obj-C
-* profiles (production / development by default: optimization levels, etc)
-* installation script (brew?)
-* nested projects / recursive discovery / compilation of build "app"
-* re-organization of build output / build dirs to simplify build cmds?
-  * symlink of dylibs/swiftmodules?
-* plugin API
+    Swish.app("swish:client", ["swish:core"]) { app in
+      module.srcDir = "src/swish/core"
 
-Installing
------------ 
-Clone the repo, run `rake build`, edit `bin/swish` to point to the
-newly-created "build" directory, and copy `bin/swish` somewhere on your `$PATH`
+      // the name of the binary executable file
+      module.productName("swish")
+    }
 
-To verify, `(cd example && swish run)`
+Similarly to the module step, this will add a task for building, but it also
+adds a second for running the compiled app. Using `swish:client:run`, we can
+run our new app target, linking it with our module target, and hey-presto!
 
-I know, it's rudimentary. It's alpha software. What do you expect? :P
+I can also create a task that simply invokes other tasks.
+
+    Swish.task("run-with-turtles", ["turtles", "swish:client:run"])
+
+Or, I can put a file in `src/scripts/` and run it, linked to the other projects.
+
+    Swish.script("example-script", ["swish:core"])
+
+(coming soon, a REPL that does the same)
+
+
+### Roadmap
+#### 0.1.0
+* task runner [done]
+* global client (builds and links per-project executables)
+* builder for pure-Swift targets [done]
+* builder for Clang for pure-C/Obj-C targets, linkable with Swift
+* logging
+* support for external dependencies
+* support for plugins
+* brew installation
+* finalize APIs 
