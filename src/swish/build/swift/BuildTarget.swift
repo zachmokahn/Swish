@@ -19,6 +19,15 @@ final public class BuildTarget : Target {
     set { _productName = newValue }
   }
 
+  static func links(target: BuildTarget) -> [Link] {
+    let targetLinks = target.subtargets.map { st in
+      Link(name: st.productName, path: System.pwd + "/" + st.buildDir)
+    }
+
+    let parentLinks = target.subtargets.flatMap { links($0) }.uniq({ $0.path })
+    return targetLinks + target.moduleDeps + parentLinks
+  }
+
   init(key: String, deps: [String], build: BuildTarget -> Void) {
     self.key = key
     self.targetDeps = deps
@@ -37,11 +46,5 @@ final public class BuildTarget : Target {
     return targetDeps.map { target in
       workspace.findTarget(target, ofType: BuildTarget.self)
     }.compact()
-  }
-
-  var links: [Link] {
-    return subtargets.map { target in
-      Link(name: target.productName, path: System.pwd + "/" + target.buildDir)
-    } + moduleDeps
   }
 }

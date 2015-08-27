@@ -34,6 +34,11 @@ extension SequenceType {
 
     return nil
   }
+
+  public func uniq<T:Hashable>(fn: Generator.Element -> T) -> [Generator.Element] {
+    var addedDict: [T:Bool] = [:]
+    return self.filter { addedDict.updateValue(true, forKey: fn($0)) == nil }
+  }
 }
 
 extension SequenceType where Generator.Element: Equatable {

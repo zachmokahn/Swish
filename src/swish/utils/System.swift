@@ -1,6 +1,6 @@
 import Darwin
 
-func identity<T>(v: T) -> T { return v }
+public func identity<T>(v: T) -> T { return v }
 private let maxNameLength = Int(MAXNAMLEN)
 
 public struct System {

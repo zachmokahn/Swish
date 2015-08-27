@@ -1,6 +1,3 @@
-import Contacts
+import Middleman
 
-let greeting = Greeting(greeting: "Hello")
-let person = Person(name: "Brian")
-
-print(greeting.greet(person))
+print(middleman())

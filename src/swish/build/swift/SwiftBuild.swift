@@ -5,15 +5,15 @@ public struct SwiftBuild {
   var target: BuildTarget
 
   var linkPaths: [String] {
-    return target.links.map { "-L\($0.path)" }
+    return BuildTarget.links(target).map { "-L\($0.path)" }
   }
 
   var importPaths: [String] {
-    return target.links.map { "-I\($0.path)" }
+    return BuildTarget.links(target).map { "-I\($0.path)" }
   }
 
   var linkModules: [String] {
-    return target.links.map { "-l\($0.name)" }
+    return BuildTarget.links(target).map { "-l\($0.name)" }
   }
 
   var sdk: String = "macosx"

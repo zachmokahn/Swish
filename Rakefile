@@ -15,7 +15,7 @@ def swish_bin(cmd)
 end
 
 def system(cmd)
-  # puts(cmd) if VERBOSE
+  puts(cmd) if VERBOSE
   Kernel.system(cmd)
 end
 
@@ -35,7 +35,7 @@ task :run_example do
 end
 
 task :run_script do
-  system("(cd ./example && #{swish_bin("greet CLI:run aldskfj")})")
+  system("(cd ./example && #{swish_bin("run")})")
 end
 
 task :publish do
