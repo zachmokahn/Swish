@@ -5,41 +5,37 @@ working_dir = FileUtils.pwd
 build_dir = File.join(working_dir, "build", project)
 project_dir = File.join(working_dir, "src", project)
 
+VERBOSE = false
+
 def swish_bin(cmd)
-  "DYLD_LIBRARY_PATH=../build/Swish xcrun swift -I ../build/Swish -lSwish project.swift #{cmd}"
+  # "swish #{cmd}"
+  "DYLD_LIBRARY_PATH=../build/Swish:../build/SwishBuildSwift:../build/SwishUtils " +
+    "xcrun swift -I ../build/Swish -I ../build/SwishBuildSwift -I ../build/SwishUtils " +
+    "-lSwish -lSwishBuildSwift -lSwishUtils project.swift #{cmd} #{"--verbose" if VERBOSE}"
 end
 
-task :default => [:clean, :build, :build_example, :run_example]
+def system(cmd)
+  puts(cmd) if VERBOSE
+  Kernel.system(cmd)
+end
+
+task :default => [:build_example, :run_example]
 
 task :clean do
   FileUtils.rm_rf(build_dir)
 end
 
-task :build do
-  FileUtils.mkdir_p(build_dir)
-  FileUtils.cd(build_dir) do
-    cmd = "xcrun --sdk macosx swiftc -emit-library -module-name #{project} -emit-module $(find #{project_dir} -name *.swift)"
-    puts cmd
-    system(cmd)
-  end
-end
-
-task :run => [:build] do
-  cmd = "DYLD_LIBRARY_PATH=#{build_dir} " +
-    "xcrun swift -I#{build_dir} " +
-    "-l#{project} example/project.swift"
-
-  puts cmd
-  system(cmd)
-end
-
 task :build_example do
-  system("(cd ./example && #{swish_bin("Contacts:build")})")
+  # system("(cd ./example && #{swish_bin("Contacts:build")})")
   system("(cd ./example && #{swish_bin("CLI:build")})")
 end
 
 task :run_example do
-  system("(cd ./example && swish CLI:run)")
+  system("(cd ./example && #{swish_bin("CLI:run")})")
+end
+
+task :run_script do
+  system("(cd ./example && #{swish_bin("greet")})")
 end
 
 task :publish do
