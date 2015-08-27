@@ -9,6 +9,7 @@ struct Client {
     var isEmpty: Bool { get { return args.isEmpty }}
     var verbose: Bool { get { return args.contains("--verbose") }}
     var isHelp: Bool  { get { return args.contains("--help") }}
+    var tasks: [String] { get { return args.filter { !$0.hasPrefix("--") }}}
   }
 
   let workspace: Workspace
@@ -24,15 +25,17 @@ struct Client {
 
     guard !opts.isEmpty || opts.isHelp else { return help() }
 
-    if let task = Tasks.findTask(args[0]) {
-      Tasks.run(task)
-      Swish.logger.debug("finished with exit code 0")
-
-      System.exit(0)
+    for key in opts.tasks {
+      if let task = Tasks.findTask(key) {
+        Tasks.run(task)
+      } else {
+        Swish.logger.error("Unknown task: \(key)")
+        System.exit(1)
+      }
     }
 
-    Swish.logger.error("Unknown task: \(args[0])")
-    System.exit(1)
+    Swish.logger.debug("finished with exit code 0")
+    System.exit(0)
   }
 
   func help() {

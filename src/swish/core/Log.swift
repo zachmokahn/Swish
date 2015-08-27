@@ -1,7 +1,7 @@
 import Darwin
 
 public struct Log {
-  public let out: String -> Void = print
+  public var out: String -> Void = print
 
   public func info(msg: String) {
     out(msg)

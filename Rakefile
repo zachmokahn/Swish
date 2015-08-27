@@ -5,7 +5,7 @@ working_dir = FileUtils.pwd
 build_dir = File.join(working_dir, "build", project)
 project_dir = File.join(working_dir, "src", project)
 
-VERBOSE = false
+VERBOSE = true
 
 def swish_bin(cmd)
   # "swish #{cmd}"
@@ -15,7 +15,7 @@ def swish_bin(cmd)
 end
 
 def system(cmd)
-  puts(cmd) if VERBOSE
+  # puts(cmd) if VERBOSE
   Kernel.system(cmd)
 end
 
@@ -35,7 +35,7 @@ task :run_example do
 end
 
 task :run_script do
-  system("(cd ./example && #{swish_bin("greet")})")
+  system("(cd ./example && #{swish_bin("greet CLI:run aldskfj")})")
 end
 
 task :publish do
