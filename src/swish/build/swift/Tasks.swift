@@ -22,12 +22,12 @@ extension Swish {
     addTarget(target: target, configure: configure)
   }
 
-  public static func module(
+  public static func lib(
     key: String,
     _ deps: [String] = [],
     configure: ConfigFn = defaultConfig
   ) {
-    let target = BuildTarget(key: key, deps: deps, build: BuildModule)
+    let target = BuildTarget(key: key, deps: deps, build: BuildLib)
     addTarget(target: target, configure: configure)
   }
 

@@ -5,7 +5,7 @@ working_dir = FileUtils.pwd
 build_dir = File.join(working_dir, "build", project)
 project_dir = File.join(working_dir, "src", project)
 
-VERBOSE = true
+VERBOSE = false
 
 def swish_bin(cmd)
   # "swish #{cmd}"

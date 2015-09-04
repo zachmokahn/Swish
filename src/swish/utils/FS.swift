@@ -1,16 +1,19 @@
 import Darwin
 
-private func __callback(fPath: UnsafePointer<Int8>,
-                        ftwStat: UnsafePointer<stat>,
-                        typeflag: Int32,
-                        ftwBuf: UnsafeMutablePointer<FTW>) -> Int32 {
+private func __callback(
+  fPath: UnsafePointer<Int8>,
+  ftwStat: UnsafePointer<stat>,
+  typeflag: Int32,
+  ftwBuf: UnsafeMutablePointer<FTW>
+) -> Int32 {
 
-  return FS.__walkCallback(fPath: fPath,
-                           ftwStat: ftwStat,
-                           typeflag: typeflag,
-                           ftwBuf: ftwBuf)
+  return FS.__walkCallback(
+    fPath: fPath,
+    ftwStat: ftwStat,
+    typeflag: typeflag,
+    ftwBuf: ftwBuf
+  )
 }
-
 
 public struct FS {
   static let globFlags = Darwin.GLOB_TILDE | Darwin.GLOB_BRACE | Darwin.GLOB_MARK

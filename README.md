@@ -47,13 +47,13 @@ And run them
     $ swish turtles
     I like turtles
 
-You can use Swish to build some Swift code. Here, I'll define a `module` target
-called "swish:core", and give it a few simple configuration options.
+You can use Swish to build some Swift code. Here, I'll define a dynamic library
+target called "swish:core", and give it a few simple configuration options.
 
-    Swish.module("swish:core") { module in
-      module.srcDir = "src/swish/core"
+    Swish.lib("swish:core") { lib in
+      lib.srcDir = "src/swish/core"
       // the name of the created module
-      module.productName("Swish")
+      lib.productName("Swish")
     }
 
 A module target creates a pure-Swift dynamic library. This module can be
@@ -66,10 +66,10 @@ we'll create an app called "swish:client", and make it depend on the "core"
 library we built previously.
 
     Swish.app("swish:client", ["swish:core"]) { app in
-      module.srcDir = "src/swish/core"
+      app.srcDir = "src/swish/core"
 
       // the name of the binary executable file
-      module.productName("swish")
+      app.productName("swish")
     }
 
 Similarly to the module step, this will add a task for building, but it also
