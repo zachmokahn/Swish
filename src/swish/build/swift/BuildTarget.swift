@@ -25,10 +25,11 @@ final public class BuildTarget : Target {
     }
 
     let parentLinks = target.subtargets.flatMap { links($0) }.uniq({ $0.path })
+
     return targetLinks + target.moduleDeps + parentLinks
   }
 
-  init(key: String, deps: [String], build: BuildTarget -> Void) {
+  public init(key: String, deps: [String], build: BuildTarget -> Void) {
     self.key = key
     self.targetDeps = deps
     self.build = build

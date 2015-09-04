@@ -3,8 +3,8 @@ import Swish
 public typealias ConfigFn = BuildTarget -> Void
 public let defaultConfig: ConfigFn = { t in return }
 
-extension Swish {
-  public static func app(
+public struct SwiftBuildDSL {
+  public func app(
     key: String,
     _ deps: [String] = [],
     configure: ConfigFn = defaultConfig
@@ -22,7 +22,7 @@ extension Swish {
     addTarget(target: target, configure: configure)
   }
 
-  public static func lib(
+  public func lib(
     key: String,
     _ deps: [String] = [],
     configure: ConfigFn = defaultConfig
@@ -31,7 +31,7 @@ extension Swish {
     addTarget(target: target, configure: configure)
   }
 
-  public static func script(
+  public func script(
     key: String,
     _ deps: [String] = []
   ) {
@@ -39,16 +39,20 @@ extension Swish {
       Task(key: key, prereqs: deps, fn: RunScript(key, deps: deps))
     )
   }
+
+  private func addTarget(target target: BuildTarget, configure: ConfigFn) {
+    configure(target)
+
+    workspace.targets.append(target)
+
+    let buildDeps = target.targetDeps.map { "\($0):build" }
+
+    workspace.tasks.append(
+      Task(key: "\(target.key):build", prereqs: buildDeps, fn: target.runBuild)
+    )
+  }
 }
 
-private func addTarget(target target: BuildTarget, configure: ConfigFn) {
-  configure(target)
-
-  workspace.targets.append(target)
-
-  let buildDeps = target.targetDeps.map { "\($0):build" }
-
-  workspace.tasks.append(
-    Task(key: "\(target.key):build", prereqs: buildDeps, fn: target.runBuild)
-  )
+extension Swish {
+  public static let Swift = SwiftBuildDSL()
 }

@@ -36,7 +36,7 @@ example:
     }
 
 
-Then, you can create some tasks:
+Then, you can create some tasks (in `src/tasks`):
 
     project.task("turtles") {
       print("I like turtles.")
@@ -90,11 +90,11 @@ Or, I can put a file in `src/scripts/` and run it, linked to the other projects.
 ### Roadmap
 #### 0.1.0
 * task runner [done]
-* global client (builds and links per-project executables)
+* project-builder client [done]
 * builder for pure-Swift targets [done]
-* builder for Clang for pure-C/Obj-C targets, linkable with Swift
-* logging
-* support for external dependencies
-* support for plugins
-* brew installation
-* finalize APIs 
+* builder for Clang for pure-C/Obj-C targets, linkable with Swift [wip]
+* logging [done-ish]
+* support for external dependencies [not yet]
+* support for plugins [not yet]
+* brew installation [not yet]
+* finalize APIs

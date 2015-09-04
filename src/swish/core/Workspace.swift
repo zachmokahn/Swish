@@ -12,7 +12,7 @@ public class Workspace {
   public var targets: [Any] = []
   public var scripts: [Script] = []
 
-  var options: Client.Options!
+  var options = Client.Options(args: [])
 
   public func findTarget<T:Target>(key: String, ofType:T.Type) -> T? {
     for target in targets {

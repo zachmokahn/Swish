@@ -19,7 +19,7 @@ struct Client {
   }
 
   func run(args: [String]) {
-    workspace.options = Options(args: args)
+    workspace.options = Client.Options(args: args)
 
     let opts = workspace.options
 

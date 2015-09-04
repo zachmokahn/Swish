@@ -16,4 +16,11 @@ public struct System {
     var buf = Array<Int8>(count: maxNameLength, repeatedValue: 0)
     return String.fromCString(getcwd(&buf, maxNameLength))!
   }
+
+  public static var args: [String] {
+    var args = Array(Process.arguments)
+    args.removeAtIndex(0)
+
+    return args
+  }
 }

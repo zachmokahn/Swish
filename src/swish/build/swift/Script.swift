@@ -14,7 +14,7 @@ func RunScript(name: String, deps: [String])() {
 
   let path: String
 
-  path = "src/tasks/\(name).swift"
+  path = "src/scripts/\(name).swift"
   let cmd = "DYLD_LIBRARY_PATH=\(ldPath) xcrun swift \(links) \(path)"
 
   Swish.logger.debug(cmd)

@@ -1,7 +1,7 @@
 import SwishUtils
 import Swish
 
-func BuildApp(target: BuildTarget) {
+public func BuildApp(target: BuildTarget) {
   Swish.log("building \(target.key)...")
 
   var build = SwiftBuild(target: target)

@@ -9,9 +9,9 @@ VERBOSE = false
 
 def swish_bin(cmd)
   # "swish #{cmd}"
-  "DYLD_LIBRARY_PATH=../build/Swish:../build/SwishBuildSwift:../build/SwishUtils " +
-    "xcrun swift -I ../build/Swish -I ../build/SwishBuildSwift -I ../build/SwishUtils " +
-    "-lSwish -lSwishBuildSwift -lSwishUtils project.swift #{cmd} #{"--verbose" if VERBOSE}"
+  "DYLD_LIBRARY_PATH=../build/Swish:../build/SwishBuildSwift:../build/SwishUtils:../build/SwishProjects " +
+    "xcrun swift -I ../build/Swish -I ../build/SwishBuildSwift -I ../build/SwishUtils -I ../build/SwishProjects " +
+    "-lSwish -lSwishBuildSwift -lSwishUtils -lSwishProjects project.swift #{cmd} #{"--verbose" if VERBOSE}"
 end
 
 def system(cmd)
@@ -19,7 +19,7 @@ def system(cmd)
   Kernel.system(cmd)
 end
 
-task :default => [:build_example, :run_example]
+task :default => [:run_example]
 
 task :clean do
   FileUtils.rm_rf(build_dir)

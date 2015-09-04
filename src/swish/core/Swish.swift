@@ -11,10 +11,7 @@ public struct Swish {
   }
 
   public static func run() {
-    var args = Array(Process.arguments)
-    args.removeAtIndex(0)
-
-    Client(workspace: workspace).run(args)
+    Client(workspace: workspace).run(System.args)
   }
 
   public static var logger = Log()

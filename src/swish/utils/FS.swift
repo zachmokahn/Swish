@@ -7,6 +7,8 @@ private func __callback(
   ftwBuf: UnsafeMutablePointer<FTW>
 ) -> Int32 {
 
+  // temporary workaround for inability to capture local state in C callbacks
+  // will be fixed more permanently with a C-extension
   return FS.__walkCallback(
     fPath: fPath,
     ftwStat: ftwStat,
@@ -65,7 +67,7 @@ public struct FS {
   static public func scan(root: String, pattern: String) -> [File] {
     var files = [File]()
 
-    walk(root) { file in
+    self.walk(root) { file in
       if !file.isDir && fnmatch(pattern, file.path, 0) == 0 {
         files.append(file)
       }

@@ -1,21 +1,7 @@
-import Swish
-import SwishBuildSwift
+import SwishProjects
 
-Swish.app("CLI", ["Middleman"]) { app in 
-  app.sources = [(path: "src/CLI", pattern: "*.swift")]
+defineProject { project in
+  project.name = "swish-example"
+  project.description = "an example project to show off what Swish can do"
+  project.authors = ["Brian Pratt"]
 }
-
-Swish.lib("Contacts") { lib in
-  lib.sources = [(path: "src/Contacts", pattern: "*.swift")]
-}
-
-Swish.lib("Middleman", ["Contacts"]) { lib in
-  lib.sources = [(path: "src/Middleman", pattern: "*.swift")]
-}
-
-Swish.task("build", ["Middleman:build", "Contacts:build", "CLI:build"])
-Swish.task("run", ["build", "CLI:run"])
-
-Swish.script("greet", ["Contacts"])
-
-Swish.run()
