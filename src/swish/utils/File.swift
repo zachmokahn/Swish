@@ -28,6 +28,10 @@ public struct File {
     return chunks.join("/")
   }
 
+  public static func exists(path: String) -> Bool {
+    return Darwin.access(path.withCString(identity), Darwin.F_OK) != -1
+  }
+
   public static func stat(path: String) -> File {
     let statBuf = UnsafeMutablePointer<Darwin.stat>.alloc(1)
 

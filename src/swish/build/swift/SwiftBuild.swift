@@ -2,14 +2,20 @@ import SwishUtils
 import Swish
 
 func isStaleBuild(target: BuildTarget, _ filename: String) -> Bool {
-  let lastBuilt = File.mtime(File.join(Swish.root, target.buildDir, filename))
+  let productPath = File.join(Swish.root, target.buildDir, filename)
 
-  let lastChanged = target.sources.flatMap { source in
+  if !File.exists(productPath) {
+    return true
+  }
+
+  let lastBuilt = File.mtime(productPath)
+
+  let lastChanged: UInt = target.sources.flatMap { source in
     return FS.scan(
       File.join(Swish.root, source.path),
       pattern: source.pattern
     ).map { $0.mtime }
-  }.sort()[0]
+  }.sort().first ?? lastBuilt + 1
 
   return lastBuilt <= lastChanged
 }

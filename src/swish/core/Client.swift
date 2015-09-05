@@ -28,7 +28,7 @@ struct Client {
       }
     }
 
-    Swish.logger.debug("finished with exit code 0")
+    // Swish.logger.debug("finished with exit code 0")
     System.exit(0)
   }
 

@@ -3,6 +3,7 @@ import SwishUtils
 
 public enum RepoType {
   case GitHub
+  case Git
 }
 
 public class Project {
@@ -28,13 +29,12 @@ func buildProject(project: Project) {
 
   target.sources = [(path: "src/tasks", pattern: "*.swift")]
 
-  let root = System.pwd
+  let path = System.env("SWISH_DIR") ?? File.join(System.pwd, ".swish", "lib")
 
-  target.link(module: "Swish", path: "\(root)/../build/Swish")
-  target.link(module: "SwishUtils", path: "\(root)/../build/SwishUtils")
-  target.link(module: "SwishBuildSwift", path: "\(root)/../build/SwishBuildSwift")
+  for lib in ["Swish", "SwishUtils", "SwishBuildSwift"] {
+    target.link(module: lib, path: path)
+  }
 
   target.runBuild()
-
   SwishBuildSwift.RunApp(target)(args: System.args)
 }

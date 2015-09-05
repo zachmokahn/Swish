@@ -84,18 +84,25 @@ Or, I can put a file in `src/scripts/` and run it, linked to the other projects.
 
     Swish.script("example-script", ["swish:core"])
 
-(coming soon, a REPL that does the same)
-
 
 ### Roadmap
-#### 0.1.0
-* task runner [done]
-* project-builder client [done]
-* builder for pure-Swift targets [done]
+##### Done
+* project meta-client
+* extensible API for declaring projects, builds, tasks, and scripts
+* task running: runs pre-requisite tasks, skips re-runs
+* basic builder for pure-Swift targets
+* basic logging
+* doesn't rebuild existing, unchanged targets (could be optimized further,
+  but.. later)
+
+##### In Progress
+* bootstrappable build (shell script? rakefile?)
+
+##### Undone
 * builder for Clang for pure-C/Obj-C targets, linkable with Swift [wip]
-* logging [done-ish]
-* support for external dependencies [not yet]
-* support for plugins [not yet]
-* brew installation [not yet]
-* finalize APIs
+* logging enhancements
+* support for external dependencies
+* support for plugins
+* brew installation
+* repl? (still needs proof of concept)
 * improve error cases: short-circuit on error, more helpful error messages
