@@ -22,7 +22,7 @@ public func isStaleBuild(target: BuildTarget, _ filename: String) -> Bool {
   return lastBuilt <= lastChanged
 }
 
-public struct SwiftBuild {
+public struct SwiftTargetBuild {
   var target: BuildTarget
 
   var linkPaths: [String] {

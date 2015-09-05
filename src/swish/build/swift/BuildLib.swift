@@ -7,7 +7,7 @@ public func BuildLib(target: BuildTarget) {
     return
   }
 
-  var build = SwiftBuild(target: target)
+  var build = SwiftTargetBuild(target: target)
 
   build.otherFlags = [
     "-emit-module",

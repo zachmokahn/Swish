@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-bin/clean && bin/build && bin/swish-example run
+bin/clean a && bin/build && bin/swish-example run $@

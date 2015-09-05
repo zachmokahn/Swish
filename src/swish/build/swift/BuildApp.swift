@@ -9,7 +9,7 @@ public func BuildApp(target: BuildTarget) {
 
   Swish.log("building \(target.key)...")
 
-  var build = SwiftBuild(target: target)
+  var build = SwiftTargetBuild(target: target)
   build.otherFlags = [ "-o \(target.productName)" ]
 
   Swish.logger.debug("  create build directory")

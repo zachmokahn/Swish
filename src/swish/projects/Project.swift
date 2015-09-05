@@ -31,6 +31,7 @@ func buildAndRunProject(project: Project) {
 
   if(!isStaleBuild(target, target.productName)) {
     Swish.logger.debug("Project up-to-date")
+
     SwishBuildSwift.RunApp(target)(args: System.args)
     return
   }
@@ -47,7 +48,7 @@ func buildAndRunProject(project: Project) {
     target.link(module: lib, path: path)
   }
 
-  var build = SwiftBuild(target: target)
+  var build = SwiftTargetBuild(target: target)
   build.otherFlags = [ "-o \(target.productName)" ]
 
   Swish.logger.debug("Building project")
