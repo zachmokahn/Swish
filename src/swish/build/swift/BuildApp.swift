@@ -2,6 +2,11 @@ import SwishUtils
 import Swish
 
 public func BuildApp(target: BuildTarget) {
+  if(!isStaleBuild(target, target.productName)) {
+    Swish.logger.debug("\(target.key)... up-to-date")
+    return
+  }
+
   Swish.log("building \(target.key)...")
 
   var build = SwiftBuild(target: target)

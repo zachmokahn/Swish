@@ -19,4 +19,23 @@ public struct File {
     self.gid = UInt(raw.memory.st_gid)
     self.isDir = type == 1
   }
+
+  public static func mtime(path: String) -> UInt {
+    return File.stat(path).mtime
+  }
+
+  public static func join(chunks: String...) -> String {
+    return chunks.join("/")
+  }
+
+  public static func stat(path: String) -> File {
+    let statBuf = UnsafeMutablePointer<Darwin.stat>.alloc(1)
+
+    Darwin.stat(path.withCString(identity), statBuf)
+    let file = File(path: path, raw: statBuf, type: 0)
+
+    statBuf.dealloc(1)
+
+    return file
+  }
 }

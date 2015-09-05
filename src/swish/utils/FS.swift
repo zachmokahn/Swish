@@ -67,7 +67,9 @@ public struct FS {
   static public func scan(root: String, pattern: String) -> [File] {
     var files = [File]()
 
-    self.walk(root) { file in
+    let scanRoot = root.hasSuffix("/") ? root : File.join(root, "/")
+
+    self.walk(scanRoot) { file in
       if !file.isDir && fnmatch(pattern, file.path, 0) == 0 {
         files.append(file)
       }

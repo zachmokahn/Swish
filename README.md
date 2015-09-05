@@ -98,3 +98,4 @@ Or, I can put a file in `src/scripts/` and run it, linked to the other projects.
 * support for plugins [not yet]
 * brew installation [not yet]
 * finalize APIs
+* improve error cases: short-circuit on error, more helpful error messages

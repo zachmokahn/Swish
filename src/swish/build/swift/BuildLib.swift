@@ -2,7 +2,10 @@ import SwishUtils
 import Swish
 
 public func BuildLib(target: BuildTarget) {
-  Swish.log("building \(target.key)...")
+  if(!isStaleBuild(target, "\(target.productName).swiftmodule")) {
+    Swish.logger.debug("\(target.key)... up-to-date")
+    return
+  }
 
   var build = SwiftBuild(target: target)
 
@@ -12,6 +15,7 @@ public func BuildLib(target: BuildTarget) {
     "-module-name \(target.productName)"
   ]
 
+  Swish.log("building \(target.key)...")
   Swish.logger.debug("  create build directory")
   System.exec("mkdir -p \(target.buildDir)")
 

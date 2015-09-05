@@ -12,6 +12,6 @@ public struct Log {
   }
 
   public func debug(msg: String) {
-    if workspace.options.verbose { out(msg) }
+    if options.verbose { out(msg) }
   }
 }

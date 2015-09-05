@@ -1,6 +1,19 @@
 import SwishUtils
 import Swish
 
+func isStaleBuild(target: BuildTarget, _ filename: String) -> Bool {
+  let lastBuilt = File.mtime(File.join(Swish.root, target.buildDir, filename))
+
+  let lastChanged = target.sources.flatMap { source in
+    return FS.scan(
+      File.join(Swish.root, source.path),
+      pattern: source.pattern
+    ).map { $0.mtime }
+  }.sort()[0]
+
+  return lastBuilt <= lastChanged
+}
+
 public struct SwiftBuild {
   var target: BuildTarget
 
@@ -16,7 +29,6 @@ public struct SwiftBuild {
     return BuildTarget.links(target).map { "-l\($0.name)" }
   }
 
-  var sdk: String = "macosx"
   var sources: [String] {
     return target.sources.flatMap { source in
       FS.scan(source.path, pattern: source.pattern).map {
@@ -26,6 +38,7 @@ public struct SwiftBuild {
   }
 
   var otherFlags: [String] = []
+  var sdk: String = "macosx"
 
   var cmd: String {
     return
@@ -43,4 +56,5 @@ public struct SwiftBuild {
   init(target: BuildTarget) {
     self.target = target
   }
+
 }

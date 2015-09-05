@@ -2,9 +2,7 @@ import SwishUtils
 
 struct Client {
   struct Options {
-    let args: [String]
-
-    init(args: [String]) { self.args = args }
+    let args: [String] = System.args
 
     var isEmpty: Bool { get { return args.isEmpty }}
     var verbose: Bool { get { return args.contains("--verbose") }}
@@ -18,14 +16,10 @@ struct Client {
     self.workspace = workspace
   }
 
-  func run(args: [String]) {
-    workspace.options = Client.Options(args: args)
+  func run() {
+    guard !options.isEmpty || options.isHelp else { return help() }
 
-    let opts = workspace.options
-
-    guard !opts.isEmpty || opts.isHelp else { return help() }
-
-    for key in opts.tasks {
+    for key in options.tasks {
       if let task = Tasks.findTask(key) {
         Tasks.run(task)
       } else {

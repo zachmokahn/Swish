@@ -1,5 +1,4 @@
 import SwishBuildSwift
-import Swish
 import SwishUtils
 
 public enum RepoType {
@@ -29,9 +28,11 @@ func buildProject(project: Project) {
 
   target.sources = [(path: "src/tasks", pattern: "*.swift")]
 
-  target.link(module: "Swish", path: "\(Swish.root)/../build/Swish")
-  target.link(module: "SwishUtils", path: "\(Swish.root)/../build/SwishUtils")
-  target.link(module: "SwishBuildSwift", path: "\(Swish.root)/../build/SwishBuildSwift")
+  let root = System.pwd
+
+  target.link(module: "Swish", path: "\(root)/../build/Swish")
+  target.link(module: "SwishUtils", path: "\(root)/../build/SwishUtils")
+  target.link(module: "SwishBuildSwift", path: "\(root)/../build/SwishBuildSwift")
 
   target.runBuild()
 
