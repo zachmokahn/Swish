@@ -13,9 +13,7 @@ Swish.Swift.lib("Middleman", ["Contacts"]) { lib in
   lib.sources = [(path: "src/Middleman", pattern: "*.swift")]
 }
 
-Swish.task("build", ["Middleman:build", "Contacts:build", "CLI:build"])
-Swish.task("run", ["build", "CLI:run"])
-
 Swish.Swift.script("greet", ["Contacts"])
 
-Swish.run()
+Swish.task("build", ["Middleman:build", "Contacts:build", "CLI:build"])
+Swish.task("run", ["build", "CLI:run"])

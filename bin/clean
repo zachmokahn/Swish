@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+set -e
+
+rm -rf ./build
+
+if [[ $# -eq 1 ]]; then
+  rm -rf ./example/build
+fi

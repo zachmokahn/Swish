@@ -2,7 +2,7 @@ import SwishUtils
 import Swish
 
 public func BuildLib(target: BuildTarget) {
-  if(!isStaleBuild(target, "\(target.productName).swiftmodule")) {
+  if(!isStaleBuild(target, "lib\(target.productName).dylib")) {
     Swish.logger.debug("\(target.key)... up-to-date")
     return
   }

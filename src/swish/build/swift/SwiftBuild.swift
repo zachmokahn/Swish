@@ -1,7 +1,7 @@
 import SwishUtils
 import Swish
 
-func isStaleBuild(target: BuildTarget, _ filename: String) -> Bool {
+public func isStaleBuild(target: BuildTarget, _ filename: String) -> Bool {
   let productPath = File.join(Swish.root, target.buildDir, filename)
 
   if !File.exists(productPath) {
@@ -10,12 +10,14 @@ func isStaleBuild(target: BuildTarget, _ filename: String) -> Bool {
 
   let lastBuilt = File.mtime(productPath)
 
-  let lastChanged: UInt = target.sources.flatMap { source in
+  let sources = target.sources.flatMap { source in
     return FS.scan(
       File.join(Swish.root, source.path),
       pattern: source.pattern
-    ).map { $0.mtime }
-  }.sort().first ?? lastBuilt + 1
+    )
+  }
+
+  let lastChanged: UInt = sources.map { $0.mtime }.sort().first ?? lastBuilt + 1
 
   return lastBuilt <= lastChanged
 }
@@ -43,10 +45,10 @@ public struct SwiftBuild {
     }
   }
 
-  var otherFlags: [String] = []
-  var sdk: String = "macosx"
+  public var otherFlags: [String] = []
+  public var sdk: String = "macosx"
 
-  var cmd: String {
+  public var cmd: String {
     return
       [
         ["(cd ./\(target.buildDir) &&", "xcrun", "-sdk \(sdk)", "swiftc"],
@@ -59,7 +61,7 @@ public struct SwiftBuild {
       ].flatMap { $0.uniq() }.join(" ")
   }
 
-  init(target: BuildTarget) {
+  public init(target: BuildTarget) {
     self.target = target
   }
 

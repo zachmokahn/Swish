@@ -1,5 +1,6 @@
 import SwishBuildSwift
 import SwishUtils
+import Swish
 
 public enum RepoType {
   case GitHub
@@ -21,20 +22,36 @@ public func defineProject(configure: Project -> Void) {
   let project = Project()
   configure(project)
 
-  buildProject(project)
+  buildAndRunProject(project)
 }
 
-func buildProject(project: Project) {
+func buildAndRunProject(project: Project) {
   let target = BuildTarget(key: "project", deps: [], build: SwishBuildSwift.BuildApp)
+  target.sources = [(path: "build/project", pattern: "*.swift")]
 
-  target.sources = [(path: "src/tasks", pattern: "*.swift")]
+  if(!isStaleBuild(target, target.productName)) {
+    Swish.logger.debug("Project up-to-date")
+    SwishBuildSwift.RunApp(target)(args: System.args)
+    return
+  }
+
+  let files = FS.scan("src/tasks/", pattern: "*.swift").map { $0.path }.join(" ")
+
+  System.exec("mkdir -p build/project")
+  System.exec("cat \(files) > build/project/project.swift")
+  System.exec("echo 'Swish.run()' >> build/project/project.swift")
 
   let path = System.env("SWISH_DIR") ?? File.join(System.pwd, ".swish", "lib")
 
-  for lib in ["Swish", "SwishUtils", "SwishBuildSwift"] {
+  for lib in project.plugins + ["Swish", "SwishUtils", "SwishBuildSwift"] {
     target.link(module: lib, path: path)
   }
 
-  target.runBuild()
+  var build = SwiftBuild(target: target)
+  build.otherFlags = [ "-o \(target.productName)" ]
+
+  Swish.logger.debug("Building project")
+  System.exec(build.cmd)
+
   SwishBuildSwift.RunApp(target)(args: System.args)
 }

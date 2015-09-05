@@ -1,0 +1,41 @@
+#! /usr/bin/env sh
+
+set -e
+
+root_dir=$(pwd)
+
+# build utils
+mkdir -p build/SwishUtils && (cd ./build/SwishUtils && xcrun -sdk macosx swiftc \
+  -emit-library -module-name SwishUtils -emit-module \
+  $(find $root_dir/src/swish/utils -name *.swift))
+
+echo "built utils"
+
+# build core
+mkdir -p build/Swish && (cd ./build/Swish && xcrun -sdk macosx swiftc \
+  -L$root_dir/build/SwishUtils -I$root_dir/build/SwishUtils -lSwishUtils \
+  -emit-library -module-name Swish -emit-module \
+  $(find $root_dir/src/swish/core -name *.swift))
+
+echo "built core"
+
+# build swift-builder
+mkdir -p build/SwishBuildSwift && (cd ./build/SwishBuildSwift && \
+  xcrun -sdk macosx swiftc \
+  -L$root_dir/build/Swish -I$root_dir/build/Swish -lSwish \
+  -L$root_dir/build/SwishUtils -I$root_dir/build/SwishUtils -lSwishUtils \
+  -emit-library -module-name SwishBuildSwift -emit-module \
+  $(find $root_dir/src/swish/build/swift -name *.swift))
+
+echo "built swift-builder"
+
+# build meta-client
+mkdir -p build/SwishProjects && (cd ./build/SwishProjects && \
+  xcrun -sdk macosx swiftc \
+  -L$root_dir/build/SwishBuildSwift -I$root_dir/build/SwishBuildSwift -lSwishBuildSwift \
+  -L$root_dir/build/Swish -I$root_dir/build/Swish -lSwish \
+  -L$root_dir/build/SwishUtils -I$root_dir/build/SwishUtils -lSwishUtils \
+  -emit-library -module-name SwishProjects -emit-module \
+  $(find $root_dir/src/swish/projects -name *.swift))
+
+echo "built meta-client"

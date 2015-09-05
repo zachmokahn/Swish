@@ -29,16 +29,16 @@ public struct File {
   }
 
   public static func exists(path: String) -> Bool {
-    return Darwin.access(path.withCString(identity), Darwin.F_OK) != -1
+    return Darwin.access(path, Darwin.F_OK) != -1
   }
 
   public static func stat(path: String) -> File {
     let statBuf = UnsafeMutablePointer<Darwin.stat>.alloc(1)
 
-    Darwin.stat(path.withCString(identity), statBuf)
+    Darwin.stat(path, statBuf)
     let file = File(path: path, raw: statBuf, type: 0)
 
-    statBuf.dealloc(1)
+    statBuf.destroy()
 
     return file
   }

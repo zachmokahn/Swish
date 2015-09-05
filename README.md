@@ -12,8 +12,7 @@ download and install dependencies, deploy code, whatever.
 ### How do I use it?
 First, know that Swish is unpublished, and doesn't have a "version" yet. It's
 more like a prototype. To install it, put `bin/swish` somewhere on your path and
-modify it to point to the directory Swish is cloned to. Run `rake` to build.
-(I'll get this process better automated in the future).
+modify it to point to the directory Swish is cloned to. Run `bin/build` to build.
 
 Make a new project directory. Add a file called `project.swift` to that new
 directory. This file tells Swift some metadata about your project, so that
@@ -94,15 +93,15 @@ Or, I can put a file in `src/scripts/` and run it, linked to the other projects.
 * basic logging
 * doesn't rebuild existing, unchanged targets (could be optimized further,
   but.. later)
-
-##### In Progress
-* bootstrappable build (shell script? rakefile?)
+* bootstrappable build (shell script)
 
 ##### Undone
-* builder for Clang for pure-C/Obj-C targets, linkable with Swift [wip]
+* build profiles + optimization levels for release and debug
+* builder for Clang for pure-C/Obj-C targets, linkable with Swift
 * logging enhancements
 * support for external dependencies
 * support for plugins
 * brew installation
 * repl? (still needs proof of concept)
 * improve error cases: short-circuit on error, more helpful error messages
+* investigate Linux implementation details

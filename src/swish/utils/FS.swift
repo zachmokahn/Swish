@@ -24,7 +24,7 @@ public struct FS {
     var globRes = Darwin.glob_t()
     var result: [String] = []
 
-    Darwin.glob(pattern.withCString(identity), globFlags, nil, &globRes)
+    Darwin.glob(pattern, globFlags, nil, &globRes)
 
     let resultCount = Int(globRes.gl_matchc)
     for var i = 0; i < resultCount; i++ {
@@ -52,7 +52,7 @@ public struct FS {
 
   static public func ftw(path: String, cb: WalkCallback) {
     withWalkCallback(cb) {
-      nftw(path.withCString(identity), __callback, 200, FTW_CHDIR)
+      nftw(path, __callback, 200, FTW_CHDIR)
     }
   }
 

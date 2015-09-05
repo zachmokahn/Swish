@@ -8,7 +8,7 @@ public struct Log {
   }
 
   public func error(msg: String) {
-    Darwin.fputs((msg + "\n").withCString({ $0 }), Darwin.stderr)
+    Darwin.fputs(msg + "\n", Darwin.stderr)
   }
 
   public func debug(msg: String) {

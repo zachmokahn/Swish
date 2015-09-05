@@ -25,8 +25,6 @@ public struct System {
   }
 
   public static func env(key: String) -> String? {
-    return String.fromCString(
-      Darwin.getenv(key.withCString(identity))
-    )
+    return String.fromCString(Darwin.getenv(key))
   }
 }
