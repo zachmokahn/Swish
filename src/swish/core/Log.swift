@@ -1,8 +1,6 @@
 import Darwin
 
 public struct Log {
-  public var out: String -> Void = print
-
   public func info(msg: String) {
     out(msg)
   }
@@ -14,4 +12,8 @@ public struct Log {
   public func debug(msg: String) {
     if options.verbose { out(msg) }
   }
+
+	public func out(msg: String) {
+		Darwin.fputs(msg + "\n", Darwin.stdout)
+	}
 }

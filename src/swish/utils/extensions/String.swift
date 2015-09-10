@@ -12,12 +12,12 @@ extension String {
       return nil
     }
 
-    var i = distance(startIndex, startAt)
+    var i = startIndex.distanceTo(startAt)
 
     while i <= (self.length - fragment.length) {
       let range = Range(
-        start: advance(startIndex, i),
-        end:   advance(startIndex, i + fragment.length)
+        start: startIndex.advancedBy(i),
+        end:   startIndex.advancedBy(i + fragment.length)
       )
 
       if self[range] == fragment { return range.startIndex }
@@ -32,16 +32,16 @@ extension String {
     var chunks: [String] = []
     var currentIndex = startIndex
 
-    var i = distance(startIndex, indexOf(delimiter) ?? startIndex)
+    var i = startIndex.distanceTo(indexOf(delimiter) ?? startIndex)
 
     while i <= (self.length - delimiter.length) {
-      let scanStart = advance(startIndex, i)
-      let scanEnd   = advance(startIndex, i + delimiter.length)
+      let scanStart = startIndex.advancedBy(i)
+      let scanEnd   = startIndex.advancedBy(i + delimiter.length)
 
       if self[scanStart..<scanEnd] == delimiter {
         chunks.append(self[currentIndex..<scanStart])
         i += delimiter.length
-        currentIndex = advance(startIndex, i)
+        currentIndex = startIndex.advancedBy(i)
       } else {
         i++
       }
@@ -89,13 +89,13 @@ extension String {
       return self
     }
 
-    var i = distance(startIndex, startAt)
+    var i = startIndex.distanceTo(startAt)
     var newStr = self
 
     while i <= (newStr.length - fragment.length) && newStr.indexOf(fragment) != nil {
       let range = Range(
-        start: advance(newStr.startIndex, i),
-        end:   advance(newStr.startIndex, i + fragment.length)
+        start: newStr.startIndex.advancedBy(i),
+        end:   newStr.startIndex.advancedBy(i + fragment.length)
       )
 
       if newStr[range] == fragment {

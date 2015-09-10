@@ -5,7 +5,7 @@ public protocol IsOptional {
 }
 
 extension Optional: IsOptional {
-  public func forceOptional() -> T? {
+  public func forceOptional() -> Wrapped? {
     return self.flatMap { $0 }
   }
 }
@@ -66,6 +66,6 @@ extension SequenceType where Generator.Element: IsOptional {
 
 extension SequenceType where Generator.Element == String {
   public func join(str: String = "") -> String {
-    return str.join(self)
+    return self.joinWithSeparator(str)
   }
 }
