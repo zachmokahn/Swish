@@ -3,8 +3,4 @@ public protocol Target {
   var build: Self -> Void { get set }
 }
 
-public extension Target {
-  public func runBuild() { self.build(self) }
-}
-
 public func NullBuild<T:Target>(t: T) {}

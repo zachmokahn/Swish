@@ -2,15 +2,15 @@ import Swish
 import SwishBuildSwift
 
 Swish.Swift.app("CLI", ["Middleman"]) { app in 
-  app.sources = [(path: "src/CLI", pattern: "*.swift")]
+	app.sources = [(path: "src/CLI", pattern: "*.swift")]
 }
 
 Swish.Swift.lib("Contacts") { lib in
-  lib.sources = [(path: "src/Contacts", pattern: "*.swift")]
+	lib.sources = [(path: "src/Contacts", pattern: "*.swift")]
 }
 
 Swish.Swift.lib("Middleman", ["Contacts"]) { lib in
-  lib.sources = [(path: "src/Middleman", pattern: "*.swift")]
+	lib.sources = [(path: "src/Middleman", pattern: "*.swift")]
 }
 
 Swish.Swift.script("greet", ["Contacts"])

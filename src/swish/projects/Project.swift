@@ -3,56 +3,68 @@ import SwishUtils
 import Swish
 
 public enum RepoType {
-  case GitHub
-  case Git
+	case GitHub
+	case Git
 }
 
 public class Project {
-  public var name = ""
-  public var plugins = [String]()
-  public var authors = [String]()
+	public var name = ""
+	public var plugins = [String]()
+	public var authors = [String]()
 
-  public var repo: RepoType?
-  public var homepage: String?
-  public var description: String?
-  public var license: String?
+	public var repo: RepoType?
+	public var homepage: String?
+	public var description: String?
+	public var license: String?
 }
 
 public func defineProject(configure: Project -> Void) {
-  let project = Project()
-  configure(project)
+	let project = Project()
+	configure(project)
 
-  buildAndRunProject(project)
+	buildAndRunProject(project)
 }
 
 func buildAndRunProject(project: Project) {
-  let target = BuildTarget(key: "project", deps: [], build: SwishBuildSwift.BuildApp)
-  target.sources = [(path: "build/project", pattern: "*.swift")]
+	let files = FS.scan("src/tasks/", pattern: "*.swift")
 
-  if(!isStaleBuild(target, target.productName)) {
-    Swish.logger.debug("Project up-to-date")
+	let isStale: Bool
+	let productPath = File.join(Swish.root, "build", "project", "project")
+	if !File.exists(productPath) {
+		isStale = true
+	} else {
+		let lastBuilt = File.mtime(productPath)
+		let lastChanged: UInt = files.map { $0.mtime }.sort().first ?? lastBuilt + 1
+		isStale = lastChanged >= lastBuilt
+	}
 
-    SwishBuildSwift.RunApp(target)(args: System.args)
-    return
-  }
+	let target = BuildTarget(key: "project", deps: [], build: SwishBuildSwift.BuildApp)
+	target.sources = [(path: "build/project", pattern: "*.swift")]
 
-  let files = FS.scan("src/tasks/", pattern: "*.swift").map { $0.path }.join(" ")
+	if(!isStale) {
+		Swish.logger.debug("Project up-to-date")
 
-  System.exec("mkdir -p build/project")
-  System.exec("cat \(files) > build/project/project.swift")
-  System.exec("echo 'Swish.run()' >> build/project/project.swift")
+		SwishBuildSwift.RunApp(target)(args: System.args)
+		return ()
+	}
 
-  let path = System.env("SWISH_DIR") ?? File.join(System.pwd, ".swish", "lib")
+	System.exec("mkdir -p build/project")
 
-  for lib in project.plugins + ["Swish", "SwishUtils", "SwishBuildSwift"] {
-    target.link(module: lib, path: path)
-  }
+	let filenames = files.map { $0.path }.join(" ")
+	System.exec("cat \(filenames) > build/project/project.swift")
+	System.exec("echo 'Swish.run()' >> build/project/project.swift")
 
-  var build = SwiftTargetBuild(target: target)
-  build.otherFlags = [ "-o \(target.productName)" ]
+	let path = System.env("SWISH_DIR") ?? File.join(System.pwd, ".swish", "lib")
 
-  Swish.logger.debug("Building project")
-  System.exec(build.cmd)
+	for lib in project.plugins + ["Swish", "SwishUtils", "SwishBuildSwift"] {
+		target.link(module: lib, path: path)
+	}
 
-  SwishBuildSwift.RunApp(target)(args: System.args)
+	var build = SwiftTargetBuild(target: target)
+	build.otherFlags = [ "-o \(target.productName)" ]
+
+	Swish.logger.debug("Building project")
+	System.exec(build.cmd)
+
+	SwishBuildSwift.RunApp(target)(args: System.args)
 }
