@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+set -e
+
+mkdir -p /usr/local/lib/swish
+./bin/build && cp $(find build -name *.swiftmodule -or -name *.dylib) /usr/local/lib/swish
