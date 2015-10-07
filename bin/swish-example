@@ -1,6 +1,16 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 set -e
+
+if [[ ! -d ./example/.swish ]]; then
+  echo "No .swish directory found. Creating..."
+  mkdir -p ./example/.swish/lib
+
+  for f in $(find ./build -name *.dylib -or -name *.swiftmodule); do
+    cp $f ./example/.swish/lib
+  done
+fi
+
 (cd ./example && \
   DYLD_LIBRARY_PATH="../build/Swish:../build/SwishBuildSwift:../build/SwishUtils:../build/SwishProjects" \
   xcrun swift -I ../build/Swish -I ../build/SwishBuildSwift -I ../build/SwishUtils -I ../build/SwishProjects \
