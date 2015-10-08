@@ -4,3 +4,8 @@ set -e
 
 mkdir -p /usr/local/lib/swish
 ./bin/build && cp $(find build -name *.swiftmodule -or -name *.dylib) /usr/local/lib/swish
+
+cp bin/swish /usr/local/bin/swish
+chmod +x /usr/local/bin/swish
+
+echo "installed!"

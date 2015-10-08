@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 
-SWISH_DIR="your/swish/install/build/Swish"
+export SWISH_DIR="/usr/local/lib/swish"
+
+if [[ ! -d .swish ]]; then
+  echo "No .swish directory found. Creating..."
+  mkdir -p .swish/lib
+
+  for f in $(find $SWISH_DIR -name *.dylib -or -name *.swiftmodule); do
+    cp $f .swish/lib
+  done
+fi
 
 if [[ -f project.swift ]]; then
-  DYLD_LIBRARY_PATH="$SWISH_DIR:$DYLD_LIBRARY_PATH" xcrun swift -I $SWISH_DIR -lSwish $PWD/project.swift $@ 2>&1
+  DYLD_LIBRARY_PATH=".swish/lib:$DYLD_LIBRARY_PATH" xcrun swift -I $SWISH_DIR -lSwishProjects $PWD/project.swift $@
 else
   echo "Couldn't find project.swift file in $PWD"
 fi
