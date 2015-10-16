@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-export SWISH_DIR="/usr/local/lib/swish"
+SWISH_DIR="/usr/local/lib/swish"
 
 if [[ ! -d .swish ]]; then
   echo "No .swish directory found. Creating..."

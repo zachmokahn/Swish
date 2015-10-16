@@ -9,9 +9,9 @@ final public class BuildTarget : Target {
 	public var build: BuildTarget -> Void
 	public var sources: [Source] = []
 
-	var buildDir: String { get { return "build/\(key)" }}
-	var targetDeps: [String] = []
-	var moduleDeps: [Link] = []
+	public var buildDir: String { get { return "build/\(key)" }}
+	public var targetDeps: [String] = []
+	public var moduleDeps: [Link] = []
 
 	var _productName: String?
 	public var productName: String {

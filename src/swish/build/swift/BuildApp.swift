@@ -16,7 +16,7 @@ public func BuildApp(target: BuildTarget) {
 	System.exec("mkdir -p \(target.buildDir)")
 
 	Swish.logger.debug("  build Swift app \(target.productName)")
-	// Swish.logger.debug(build.cmd)
+	Swish.logger.debug(build.cmd)
 
 	System.exec(build.cmd)
 	Swish.log("  successfully built Swift app " +

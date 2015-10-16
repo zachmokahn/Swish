@@ -64,6 +64,7 @@ func buildAndRunProject(project: Project) {
 	build.otherFlags = [ "-o \(target.productName)" ]
 
 	Swish.logger.debug("Building project")
+	Swish.logger.debug(build.cmd)
 	System.exec(build.cmd)
 
 	SwishBuildSwift.RunApp(target)(args: System.args)

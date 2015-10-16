@@ -11,6 +11,6 @@ public func RunApp(target: BuildTarget)(args: [String]) {
 
 	let cmd = "DYLD_LIBRARY_PATH=\(libPath):$DYLD_LIBRARY_PATH \(target.buildDir)/\(target.productName) \(argsStr)"
 
-	// Swish.logger.debug(cmd)
+	Swish.logger.debug(cmd)
 	System.exec(cmd)
 }
