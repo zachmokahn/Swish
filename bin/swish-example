@@ -11,7 +11,13 @@ if [[ ! -d ./example/.swish ]]; then
   done
 fi
 
-(cd ./example && \
-  DYLD_LIBRARY_PATH="../build/Swish:../build/SwishBuildSwift:../build/SwishUtils:../build/SwishProjects" \
-  xcrun swift -I ../build/Swish -I ../build/SwishBuildSwift -I ../build/SwishUtils -I ../build/SwishProjects \
-  -lSwish -lSwishBuildSwift -lSwishUtils -lSwishProjects project.swift $@)
+(mkdir -p example/build/project)
+
+(cd ./example && xcrun swiftc \
+  -I $(pwd)/.swish/lib \
+  -L $(pwd)/.swish/lib \
+  -Xlinker -rpath -Xlinker $(pwd)/.swish/lib \
+  -lSwish -lSwishBuildSwift -lSwishUtils -lSwishProjects \
+  project.swift -o build/project/client)
+
+(cd ./example && ./build/project/client $@)

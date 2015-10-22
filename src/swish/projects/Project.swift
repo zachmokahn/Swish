@@ -54,7 +54,7 @@ func buildAndRunProject(project: Project) {
 	System.exec("cat \(filenames) > build/project/project.swift")
 	System.exec("echo 'Swish.run()' >> build/project/project.swift")
 
-	let path = System.env("SWISH_DIR") ?? File.join(System.pwd, ".swish", "lib")
+	let path = File.join(Swish.root, ".swish", "lib")
 
 	for lib in project.plugins + ["Swish", "SwishUtils", "SwishBuildSwift"] {
 		target.link(module: lib, path: path)
@@ -62,6 +62,7 @@ func buildAndRunProject(project: Project) {
 
 	var build = SwiftTargetBuild(target: target)
 	build.otherFlags = [ "-o \(target.productName)" ]
+  build.linkerFlags = BuildTarget.links(target).map { ["-rpath", $0.path] }.flatMap { $0 }
 
 	Swish.logger.debug("Building project")
 	Swish.logger.debug(build.cmd)

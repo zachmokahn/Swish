@@ -9,6 +9,11 @@ public func BuildLib(target: BuildTarget) {
 
 	var build = SwiftTargetBuild(target: target)
 
+  build.linkerFlags = [
+    "-install_name", 
+    "@rpath/lib\(target.productName).dylib"
+  ]
+
 	build.otherFlags = [
 		"-emit-module",
 		"-emit-library",

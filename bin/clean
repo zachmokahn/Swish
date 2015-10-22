@@ -6,4 +6,5 @@ rm -rf ./build
 
 if [[ $# -eq 1 ]]; then
   rm -rf ./example/build
+  rm -rf ./example/.swish
 fi

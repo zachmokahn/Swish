@@ -24,18 +24,23 @@ public func isStaleBuild(target: BuildTarget, _ filename: String) -> Bool {
 
 public struct SwiftTargetBuild {
 	var target: BuildTarget
+  public var linkerFlags = [String]()
 
 	var linkPaths: [String] {
-		return BuildTarget.links(target).map { "-L\($0.path)" }
+		return BuildTarget.links(target).map { "-L\($0.path)" }.uniq()
 	}
 
 	var importPaths: [String] {
-		return BuildTarget.links(target).map { "-I\($0.path)" }
+		return BuildTarget.links(target).map { "-I\($0.path)" }.uniq()
 	}
 
 	var linkModules: [String] {
-		return BuildTarget.links(target).map { "-l\($0.name)" }
+		return BuildTarget.links(target).map { "-l\($0.name)" }.uniq()
 	}
+
+  var _linkerFlags: [String] {
+    return linkerFlags.map { "-Xlinker \($0)" }
+  }
 
 	var sources: [String] {
 		return target.sources.flatMap { source in
@@ -54,10 +59,11 @@ public struct SwiftTargetBuild {
 			linkPaths,
 			importPaths,
 			linkModules,
+      _linkerFlags,
 			otherFlags,
 			sources,
 			[")"]
-		].flatMap { $0.uniq() }.join(" ")
+		].flatMap { $0 }.join(" ")
 	}
 
 	public init(target: BuildTarget) {

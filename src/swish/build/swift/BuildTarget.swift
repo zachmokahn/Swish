@@ -19,7 +19,7 @@ final public class BuildTarget : Target {
 		set { _productName = newValue }
 	}
 
-	static func links(target: BuildTarget) -> [Link] {
+	public static func links(target: BuildTarget) -> [Link] {
 		let targetLinks = target.subtargets.map { st in
 			Link(name: st.productName, path: System.pwd + "/" + st.buildDir)
 		}
