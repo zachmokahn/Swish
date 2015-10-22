@@ -1,71 +1,71 @@
 public protocol IsOptional {
-  typealias T
+	typealias T
 
-  func forceOptional() -> T?
+	func forceOptional() -> T?
 }
 
 extension Optional: IsOptional {
-  public func forceOptional() -> Wrapped? {
-    return self.flatMap { $0 }
-  }
+	public func forceOptional() -> Wrapped? {
+		return self.flatMap { $0 }
+	}
 }
 
 extension SequenceType {
-  public func all(fn: Generator.Element -> Bool) -> Bool {
-    for element in self {
-      if !fn(element) { return false }
-    }
+	public func all(fn: Generator.Element -> Bool) -> Bool {
+		for element in self {
+			if !fn(element) { return false }
+		}
 
-    return true
-  }
+		return true
+	}
 
-  public func any(fn: Generator.Element -> Bool) -> Bool {
-    for element in self {
-      if fn(element) { return true }
-    }
+	public func any(fn: Generator.Element -> Bool) -> Bool {
+		for element in self {
+			if fn(element) { return true }
+		}
 
-    return false
-  }
+		return false
+	}
 
-  public func find(fn: Generator.Element -> Bool) -> Generator.Element? {
-    for element in self {
-      if(fn(element)) { return element }
-    }
+	public func find(fn: Generator.Element -> Bool) -> Generator.Element? {
+		for element in self {
+			if(fn(element)) { return element }
+		}
 
-    return nil
-  }
+		return nil
+	}
 
-  public func uniq<T:Hashable>(fn: Generator.Element -> T) -> [Generator.Element] {
-    var addedDict: [T:Bool] = [:]
-    return self.filter { addedDict.updateValue(true, forKey: fn($0)) == nil }
-  }
+	public func uniq<T:Hashable>(fn: Generator.Element -> T) -> [Generator.Element] {
+		var addedDict: [T:Bool] = [:]
+		return self.filter { addedDict.updateValue(true, forKey: fn($0)) == nil }
+	}
 }
 
 extension SequenceType where Generator.Element: Equatable {
-  public func uniq() -> [Generator.Element] {
-    return self.reduce([]) { acc, element in
-      if acc.contains(element) { return acc }
-      return acc + [element]
-    }
-  }
+	public func uniq() -> [Generator.Element] {
+		return self.reduce([]) { acc, element in
+			if acc.contains(element) { return acc }
+			return acc + [element]
+		}
+	}
 }
 
 extension SequenceType where Generator.Element: IsOptional {
-  public func compact() -> [Generator.Element.T] {
-    var result: [Generator.Element.T] = []
+	public func compact() -> [Generator.Element.T] {
+		var result: [Generator.Element.T] = []
 
-    for element in self {
-      if let e = element.forceOptional() {
-        result.append(e)
-      }
-    }
+		for element in self {
+			if let e = element.forceOptional() {
+				result.append(e)
+			}
+		}
 
-    return result
-  }
+		return result
+	}
 }
 
 extension SequenceType where Generator.Element == String {
-  public func join(str: String = "") -> String {
-    return self.joinWithSeparator(str)
-  }
+	public func join(str: String = "") -> String {
+		return self.joinWithSeparator(str)
+	}
 }

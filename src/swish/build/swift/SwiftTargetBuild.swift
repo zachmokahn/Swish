@@ -38,9 +38,9 @@ public struct SwiftTargetBuild {
 		return BuildTarget.links(target).map { "-l\($0.name)" }.uniq()
 	}
 
-  var _linkerFlags: [String] {
-    return linkerFlags.map { "-Xlinker \($0)" }
-  }
+	var _linkerFlags: [String] {
+		return linkerFlags.map { "-Xlinker \($0)" }
+	}
 
 	var sources: [String] {
 		return target.sources.flatMap { source in
@@ -59,7 +59,7 @@ public struct SwiftTargetBuild {
 			linkPaths,
 			importPaths,
 			linkModules,
-      _linkerFlags,
+			_linkerFlags,
 			otherFlags,
 			sources,
 			[")"]

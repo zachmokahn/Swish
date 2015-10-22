@@ -62,7 +62,9 @@ func buildAndRunProject(project: Project) {
 
 	var build = SwiftTargetBuild(target: target)
 	build.otherFlags = [ "-o \(target.productName)" ]
-  build.linkerFlags = BuildTarget.links(target).map { ["-rpath", $0.path] }.uniq({ $0[1] }).flatMap { $0 }
+	build.linkerFlags = BuildTarget.links(target).map { ["-rpath", $0.path] }
+		.uniq({ $0[1] })
+		.flatMap { $0 }
 
 	Swish.logger.debug("Building project")
 	Swish.logger.debug(build.cmd)

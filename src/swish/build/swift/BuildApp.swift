@@ -10,9 +10,9 @@ public func BuildApp(target: BuildTarget) {
 	Swish.log("building \(target.key)...")
 
 	var build = SwiftTargetBuild(target: target)
-  for target in BuildTarget.links(target) {
-    build.linkerFlags += ["-rpath", target.path]
-  }
+	for target in BuildTarget.links(target) {
+		build.linkerFlags += ["-rpath", target.path]
+	}
 
 	build.otherFlags = [ "-o \(target.productName)" ]
 
