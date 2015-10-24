@@ -14,7 +14,8 @@ fi
 if [[ -f project.swift ]]; then
   mkdir -p build/project
 
-  xcrun swiftc \
+  swiftc \
+    -I /usr/include \
     -I $(pwd)/.swish/lib \
     -L $(pwd)/.swish/lib \
     -Xlinker -rpath -Xlinker $(pwd)/.swish/lib \

@@ -55,7 +55,8 @@ public struct SwiftTargetBuild {
 
 	public var cmd: String {
 		return [
-			["(cd ./\(target.buildDir) &&", "xcrun", "-sdk \(sdk)", "swiftc"],
+			["(cd ./\(target.buildDir) &&", "swiftc"],
+			["-I/usr/include"],
 			linkPaths,
 			importPaths,
 			linkModules,

@@ -5,6 +5,7 @@ set -e
 root_dir=$(pwd)
 
 mkdir -p build/SwishUtils && (cd ./build/SwishUtils && swiftc \
+  -I /usr/include \
   -emit-library -module-name SwishUtils -emit-module \
   -Xlinker -install_name -Xlinker "@rpath/libSwishUtils.dylib" \
   $(find $root_dir/src/swish/utils -name *.swift))
@@ -12,6 +13,7 @@ mkdir -p build/SwishUtils && (cd ./build/SwishUtils && swiftc \
 echo "built utils"
 
 mkdir -p build/Swish && (cd ./build/Swish && swiftc \
+  -I /usr/include \
   -L$root_dir/build/SwishUtils -I$root_dir/build/SwishUtils -lSwishUtils \
   -emit-library -module-name Swish -emit-module \
   -Xlinker -install_name -Xlinker "@rpath/libSwish.dylib" \
@@ -20,6 +22,7 @@ mkdir -p build/Swish && (cd ./build/Swish && swiftc \
 echo "built core"
 
 mkdir -p build/SwishBuildSwift && (cd ./build/SwishBuildSwift && swiftc \
+  -I /usr/include \
   -L$root_dir/build/Swish -I$root_dir/build/Swish -lSwish \
   -L$root_dir/build/SwishUtils -I$root_dir/build/SwishUtils -lSwishUtils \
   -emit-library -module-name SwishBuildSwift -emit-module \
@@ -29,6 +32,7 @@ mkdir -p build/SwishBuildSwift && (cd ./build/SwishBuildSwift && swiftc \
 echo "built swift-builder"
 
 mkdir -p build/SwishProjects && (cd ./build/SwishProjects && swiftc \
+  -I /usr/include \
   -L$root_dir/build/SwishBuildSwift -I$root_dir/build/SwishBuildSwift -lSwishBuildSwift \
   -L$root_dir/build/Swish -I$root_dir/build/Swish -lSwish \
   -L$root_dir/build/SwishUtils -I$root_dir/build/SwishUtils -lSwishUtils \

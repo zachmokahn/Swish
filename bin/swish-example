@@ -13,7 +13,8 @@ fi
 
 (mkdir -p example/build/project)
 
-(cd ./example && xcrun swiftc \
+(cd ./example && swiftc \
+  -I /usr/include
   -I $(pwd)/.swish/lib \
   -L $(pwd)/.swish/lib \
   -Xlinker -rpath -Xlinker $(pwd)/.swish/lib \
