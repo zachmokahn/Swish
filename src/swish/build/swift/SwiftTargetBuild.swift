@@ -38,6 +38,10 @@ public struct SwiftTargetBuild {
 		return BuildTarget.links(target).map { "-l\($0.name)" }.uniq()
 	}
 
+	var modulePaths: [String] {
+		return BuildTarget.imports(target).map { "-I\($0)" }.uniq()
+	}
+
 	var _linkerFlags: [String] {
 		return linkerFlags.map { "-Xlinker \($0)" }
 	}
@@ -59,6 +63,7 @@ public struct SwiftTargetBuild {
 			["-I/usr/include"],
 			linkPaths,
 			importPaths,
+			modulePaths,
 			linkModules,
 			_linkerFlags,
 			otherFlags,

@@ -8,6 +8,7 @@ final public class BuildTarget : Target {
 	public let key: String
 	public var build: BuildTarget -> Void
 	public var sources: [Source] = []
+	public var imports: [String] = []
 
 	public var buildDir: String { get { return "build/\(key)" }}
 	public var targetDeps: [String] = []
@@ -17,6 +18,11 @@ final public class BuildTarget : Target {
 	public var productName: String {
 		get { return _productName ?? key }
 		set { _productName = newValue }
+	}
+
+	public static func imports(target: BuildTarget) -> [String] {
+		let paths = target.imports.map { "\(System.pwd)/\($0)" }
+		return (paths + target.subtargets.flatMap { BuildTarget.imports($0) }).uniq()
 	}
 
 	public static func links(target: BuildTarget) -> [Link] {
